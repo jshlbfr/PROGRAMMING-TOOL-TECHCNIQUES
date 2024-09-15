@@ -1,0 +1,207 @@
+
+package T1_Calculator;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.LineBorder;
+
+public class calculator_T1 implements ActionListener {
+    
+    JFrame frame;
+    JTextField textField;
+    JButton[] numButtons = new JButton[10];
+    JButton[] functionButtons = new JButton[7];
+    JButton add, subtract, multiply, divide, equal, decimal, clear;  
+    JPanel panel, panel2;
+    
+    Font mainFont = new Font("Arial",Font.PLAIN, 24);
+    Font buttonsFont = new Font("Arial",Font.BOLD, 24);
+    Font clearFont = new Font("Arial", Font.BOLD, 18);
+    
+    double input1 = 0, input2 = 0, result = 0;
+    char operation;
+    
+    calculator_T1(){
+        frame = new JFrame("Calculator"); 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(285, 434);
+        frame.setLocation(800,300);
+        frame.setResizable(false);
+        frame.setLayout(null);
+        
+        textField = new JTextField();
+        textField.setBounds(8, 8, 253, 55);
+        textField.setFont(mainFont);
+        textField.setHorizontalAlignment(JTextField.RIGHT);
+        textField.setEditable(false);
+        textField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+        
+        add = new JButton("+");
+        subtract = new JButton("-");
+        multiply = new JButton("x");
+        divide = new JButton("/");
+        equal = new JButton("=");
+        decimal = new JButton(".");
+        clear = new JButton("clear");
+        
+        functionButtons[0] = add;
+        functionButtons[1] = subtract;
+        functionButtons[2] = multiply;
+        functionButtons[3] = divide;
+        functionButtons[4] = equal;
+        functionButtons[5] = decimal;
+        functionButtons[6] = clear;
+
+        for(int i = 0; i < 7; i++){
+            functionButtons[i].addActionListener(this);
+            functionButtons[i].setFont(buttonsFont);
+            functionButtons[i].setFocusable(false);
+            functionButtons[i].setBackground(Color.DARK_GRAY);
+            functionButtons[i].setForeground(Color.LIGHT_GRAY);
+            functionButtons[i].setBorder(BorderFactory.createCompoundBorder());
+        }
+        
+        for(int i = 0; i < 10; i++){
+            numButtons[i]= new JButton(String.valueOf(i));
+            numButtons[i].addActionListener(this);
+            numButtons[i].setFont(buttonsFont);
+            numButtons[i].setFocusable(false);
+            numButtons[i].setBackground(Color.LIGHT_GRAY);
+            numButtons[i].setBorder(BorderFactory.createCompoundBorder());     
+        }
+        
+        clear.setBounds(8, 70, 187, 55);
+        clear.setFont(clearFont);
+        
+        divide.setBounds(203, 70, 57, 55);
+        equal.setBounds(138, 332, 122, 55);
+        
+        decimal.setBackground(Color.LIGHT_GRAY);
+        decimal.setForeground(Color.BLACK);
+        
+        panel = new JPanel();
+        panel.setBounds(8, 132, 252, 192);
+        panel.setLayout(new GridLayout(3, 4, 8, 8));
+        
+        panel2 = new JPanel();
+        panel2.setBounds(8, 332, 122, 55);
+        panel2.setLayout(new GridLayout(1, 3, 8, 8));
+
+        panel.add(numButtons[1]);
+        panel.add(numButtons[2]);
+        panel.add(numButtons[3]);
+        panel.add(multiply);
+        panel.add(numButtons[4]);
+        panel.add(numButtons[5]);
+        panel.add(numButtons[6]);
+        panel.add(subtract);
+        panel.add(numButtons[7]);
+        panel.add(numButtons[8]);
+        panel.add(numButtons[9]);
+        panel.add(add);
+        panel2.add(numButtons[0]);
+        panel2.add(decimal);
+        
+        frame.add(equal);
+        frame.add(panel);
+        frame.add(panel2);
+        frame.add(clear);
+        frame.add(divide);
+        frame.add(textField);
+        frame.setVisible(true);
+    };
+    public static void main(String[] args) {
+        calculator_T1 calculator =  new calculator_T1();
+        
+    }
+    
+    private boolean isOperationClicked = false;
+    
+    @Override
+    public void actionPerformed(ActionEvent e){
+        for (int i = 0; i < 10; i++) {
+            if(e.getSource() == numButtons[i]){
+                if (isOperationClicked) {
+                    textField.setText("");
+                    isOperationClicked = false;
+                }
+                textField.setText(textField.getText().concat(String.valueOf(i)));
+            }
+        }
+        if(e.getSource() == decimal){
+            if (isOperationClicked) {
+                textField.setText("");
+                isOperationClicked = false;
+            }
+            textField.setText(textField.getText().concat("."));
+        }
+        if(e.getSource() == add){
+            input1 = Double.parseDouble(textField.getText());
+            operation = '+';
+            textField.setText(textField.getText());
+            isOperationClicked = true; 
+            functionButtons[0].setBackground(Color.LIGHT_GRAY);
+            functionButtons[0].setForeground(Color.BLACK);
+        }
+        if(e.getSource() == subtract){
+            input1 = Double.parseDouble(textField.getText());
+            operation = '-';
+            textField.setText(textField.getText());
+            isOperationClicked = true; 
+            functionButtons[1].setBackground(Color.LIGHT_GRAY);
+            functionButtons[1].setForeground(Color.BLACK);
+        }
+        if(e.getSource() == multiply){
+            input1 = Double.parseDouble(textField.getText());
+            operation = 'x';
+            textField.setText(textField.getText());
+            isOperationClicked = true; 
+            functionButtons[2].setBackground(Color.LIGHT_GRAY);
+            functionButtons[2].setForeground(Color.BLACK);
+        }
+        if(e.getSource() == divide){
+            input1 = Double.parseDouble(textField.getText());
+            operation = '/';
+            textField.setText(textField.getText());
+            isOperationClicked = true; 
+            functionButtons[3].setBackground(Color.LIGHT_GRAY);
+            functionButtons[3].setForeground(Color.BLACK);
+        }
+        if(e.getSource() == equal){
+            input2 = Double.parseDouble(textField.getText());
+            switch(operation){ 
+                case '+':
+                    result = input1 + input2;
+                    break;
+                case '-':
+                    result = input1 - input2;
+                    break;
+                case 'x':
+                    result = input1 * input2;
+                    break;
+                case '/':
+                    result = input1 / input2;
+                    break;
+            }
+            if (result % 1 == 0) { 
+                int intValue = (int) result;
+                textField.setText(String.valueOf(intValue));
+                input1 = intValue;
+            } else {
+            textField.setText(String.valueOf(result));
+            input1 = result;
+            }
+        }
+        if(e.getSource() == clear){
+            textField.setText("");
+        }
+        
+        if(e.getSource() == equal || e.getSource() == clear){
+            for (int i = 0; i < 7; i++) {
+                functionButtons[i].setBackground(Color.DARK_GRAY);
+                functionButtons[i].setForeground(Color.WHITE);
+            }
+        }
+    }
+}
